@@ -8,9 +8,9 @@ endif
 
 go-llama.cpp/libbinding.a: force_look
 ifeq ($(ENV), "prod")
-	cd go-llama.cpp; git submodule update --init && BUILD_TYPE=cublas $(MAKE) libbinding.a
+	cd go-llama.cpp; BUILD_TYPE=cublas $(MAKE) libbinding.a
 else
-	cd go-llama.cpp; git submodule update --init && $(MAKE) libbinding.a
+	cd go-llama.cpp; $(MAKE) libbinding.a
 endif
 
 clean:
