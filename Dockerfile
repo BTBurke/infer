@@ -30,5 +30,7 @@ RUN python3.11 -m pip install --upgrade pip && \
     rm /requirements.txt
 
 COPY --from=builder /workspace/infer .
+RUN mkdir -p /models
+COPY models/sakura-solar-instruct.Q5_K_M.gguf /models/sakura-solar-instruct.Q5_K_M.gguf
 ADD src .
 CMD python3.11 -u /handler.py
