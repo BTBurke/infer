@@ -3,11 +3,12 @@
   "packages": [
     "go@latest",
     "python@latest",
-    "podman@latest"
+    "podman@latest",
+    "act@latest"
   ],
   "env": {
     "MODEL_DIR": "./models",
-    "ENV": "dev"
+    "ENV":       "dev"
   },
   "shell": {
     "init_hook": [

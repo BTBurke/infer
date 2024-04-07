@@ -21,7 +21,7 @@ var (
 	seed      = -1
 )
 
-var jsonPrompt string = "### System:\nYou are a helpful assistant who always follows directions. Respond only with a valid JSON object and nothing else. Start your response with { and end with }."
+var jsonPrompt = "### System:\nYou are a helpful assistant who always follows directions. Respond only with a valid JSON object and nothing else. Start your response with { and end with }."
 
 func main() {
 	var model string

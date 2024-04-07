@@ -7,6 +7,7 @@ import httpx
 import uuid
 import os
 from urllib.parse import urlparse
+import glob
 
 # If your handler runs inference on a model, load the model here.
 # You will want models to be loaded into memory before starting serverless.
@@ -14,13 +15,16 @@ model_url = "https://huggingface.co/TheBloke/Sakura-SOLAR-Instruct-GGUF/resolve/
 # directory to save models in
 model_dir = os.getenv("MODEL_DIR", "/runpod-volume/models")
 
-def download():
+def download(model_url, model_file):
     print(f"Downloading model from {model_url}")
     print(f"Saving model to path {model_file}")
     if os.path.exists(model_file):
         return
     if os.path.dirname(model_file):
         os.makedirs(os.path.dirname(model_file), exist_ok=True)
+    for f in glob.glob(os.path.join(os.path.dirname(model_file), "*.tmp")):
+        print(f"Deleting aborted download {f}")
+        os.remove(f)
     with httpx.Client() as client:
         with client.stream("GET", model_url, follow_redirects=True) as resp:
             tmp_path = f"{model_file}.{uuid.uuid4()}.tmp"
@@ -44,5 +48,5 @@ def handler(job):
     return stdout.encode('utf-8')
 
 model_file = os.path.join(model_dir, os.path.split(urlparse(model_url).path)[1])
-download()
+download(model_url, model_file)
 runpod.serverless.start({"handler": handler})
