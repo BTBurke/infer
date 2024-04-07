@@ -1,10 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetpack-io/devbox/main/.schema/devbox.schema.json",
   "packages": [
-    "go@latest",
-    "python@latest",
-    "podman@latest",
-    "act@latest"
+    "python@latest"
   ],
   "env": {
     "MODEL_DIR": "./models",

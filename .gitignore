@@ -3,6 +3,7 @@ llama*.log
 go-llama.cpp/**/*
 infer
 test_input.json
+test_prompt.txt
 .idea/
 models/
 

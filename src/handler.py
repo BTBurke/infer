@@ -42,10 +42,10 @@ def handler(job):
     prompt = job_input['prompt']
     print("Running with prompt: {}".format(prompt))
     
-    process = subprocess.Popen(["./infer", "-m", model_file], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    stdout, stderr = process.communicate(input=prompt)
-    sys.stderr.buffer.write(stderr.encode('utf-8'))
+    process = subprocess.run(["./infer", "-m", model_file, "-ngl", "51", "--prompt", prompt, "-n", "512", "-t", str(os.cpu_count())], capture_output=True)
+    sys.stderr.buffer.write(process.stderr)
 
-    return stdout.encode('utf-8')
+    # llama returns full prompt in output, strip the prompt and just keep the generated text
+    return process.stdout.decode('utf-8').replace(prompt, "").strip().encode('utf-8')
 
 runpod.serverless.start({"handler": handler})

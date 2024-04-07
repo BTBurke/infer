@@ -2,18 +2,11 @@ ARG CUDA_VERSION=11.8.0
 ARG RUNPOD_VERSION=0.6.2
 FROM docker.io/runpod/base:${RUNPOD_VERSION}-cuda${CUDA_VERSION} as builder
 
-RUN wget -q https://go.dev/dl/go1.22.2.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz && rm go1.22.2.linux-amd64.tar.gz
-ENV PATH="${PATH}:/usr/local/go/bin"
-ENV ENV="prod"
-
 RUN mkdir -p /workspace
 WORKDIR /workspace
-COPY go.mod go.mod
-COPY go.sum go.sum
 
 COPY . .
-RUN make infer
+RUN make infer ENV="prod"
 
 ## Base image -> https://github.com/runpod/containers/blob/main/official-templates/base/Dockerfile
 ## DockerHub -> https://hub.docker.com/r/runpod/base/tags
