@@ -11,9 +11,9 @@ import glob
 
 # If your handler runs inference on a model, load the model here.
 # You will want models to be loaded into memory before starting serverless.
-model_url = "https://huggingface.co/TheBloke/Sakura-SOLAR-Instruct-GGUF/resolve/main/sakura-solar-instruct.Q5_K_M.gguf"
+model_name = "sakura-solar-instruct.Q5_K_M.gguf"
 # directory to save models in
-model_dir = os.getenv("MODEL_DIR", "/runpod-volume/models")
+model_dir = os.getenv("MODEL_DIR", "/models")
 
 def download(model_url, model_file):
     print(f"Downloading model from {model_url}")
@@ -36,7 +36,8 @@ def download(model_url, model_file):
     return
 
 def handler(job):
-    """ Handler function that will be used to process jobs. """
+    model_file = os.path.join(model_dir, model_name)
+    print(f"Running with model file {model_file}")
     job_input = job['input']
     prompt = job_input['prompt']
     print("Running with prompt: {}".format(prompt))
@@ -47,6 +48,4 @@ def handler(job):
 
     return stdout.encode('utf-8')
 
-model_file = os.path.join(model_dir, os.path.split(urlparse(model_url).path)[1])
-download(model_url, model_file)
 runpod.serverless.start({"handler": handler})
